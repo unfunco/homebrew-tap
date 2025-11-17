@@ -1,26 +1,26 @@
 class T < Formula
-  desc "Manage todo lists in the CLI."
+  desc "Manage your todo lists in the CLI."
   homepage "https://github.com/unfunco/t"
-  version "0.1.1"
+  version "0.2.0"
 
   if OS.mac? && Hardware::CPU.intel?
-    url "https://github.com/unfunco/t/releases/download/v0.1.1/t_0.1.1_Darwin_x86_64.tar.gz"
-    sha256 "68b72b8c30e030f0cd517402f98adee0d6747ad15d312e6ef2ddd3217949328a"
+    url "https://github.com/unfunco/t/releases/download/v0.2.0/t_0.2.0_Darwin_x86_64.tar.gz"
+    sha256 "9e89db4ec64f0eed4350dfaf6c45b70a83e239a08c558e294ac68bbf4191693b"
   end
 
   if OS.mac? && Hardware::CPU.arm?
-    url "https://github.com/unfunco/t/releases/download/v0.1.1/t_0.1.1_Darwin_arm64.tar.gz"
-    sha256 "73ebf99335d2d6ab526f50deb844721bca9e696452ed646f1c8012a89d9313bf"
+    url "https://github.com/unfunco/t/releases/download/v0.2.0/t_0.2.0_Darwin_arm64.tar.gz"
+    sha256 "3526f3ad52c2630ec494cc3212e5b678da55d7ce8d2bf4e300a302d89b8da189"
   end
 
   if OS.linux? && Hardware::CPU.intel?
-    url "https://github.com/unfunco/t/releases/download/v0.1.1/t_0.1.1_Linux_x86_64.tar.gz"
-    sha256 "6e1dcf506e594cdda4db1dd15e2893ea0a438fa1a9ef24590b780f5eaeb5dd58"
+    url "https://github.com/unfunco/t/releases/download/v0.2.0/t_0.2.0_Linux_x86_64.tar.gz"
+    sha256 "bb8a4398dbf68ab56e8a78d33de84c6c40af0d8002fd0a76edcd02d53acb99dc"
   end
 
   if OS.linux? && Hardware::CPU.arm? && Hardware::CPU.is_64_bit?
-    url "https://github.com/unfunco/t/releases/download/v0.1.1/t_0.1.1_Linux_arm64.tar.gz"
-    sha256 "fe47603381625064b3a7ebe0ff2587cd70306f1fe0f1ae8c811034af65d6cb94"
+    url "https://github.com/unfunco/t/releases/download/v0.2.0/t_0.2.0_Linux_arm64.tar.gz"
+    sha256 "c0b798cea836dd245b6d5cd319b6a503c16b50e763449d4eb2f8fe66e270d4b7"
   end
 
   conflicts_with "t"

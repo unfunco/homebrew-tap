@@ -1,0 +1,74 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [ update-formula ]
+
+# Example dispatch payload from the source repository:
+#
+# curl -X POST \
+#   -H "Accept: application/vnd.github+json" \
+#   -H "Authorization: Bearer $GITHUB_TOKEN" \
+#   https://api.github.com/repos/unfunco/homebrew-tap/dispatches \
+#   -d '{
+#     "event_type": "update-formula",
+#     "client_payload": {
+#       "formula": "t",
+#       "version": "0.3.0",
+#       "description": "Manage your todo lists in the CLI.",
+#       "homepage": "https://github.com/unfunco/t",
+#       "darwin_amd64_url": "https://github.com/unfunco/t/releases/download/v0.3.0/t_Darwin_x86_64.tar.gz",
+#       "darwin_amd64_sha256": "abc123...",
+#       "darwin_arm64_url": "https://github.com/unfunco/t/releases/download/v0.3.0/t_Darwin_arm64.tar.gz",
+#       "darwin_arm64_sha256": "def456...",
+#       "linux_amd64_url": "https://github.com/unfunco/t/releases/download/v0.3.0/t_Linux_x86_64.tar.gz",
+#       "linux_amd64_sha256": "ghi789...",
+#       "linux_arm64_url": "https://github.com/unfunco/t/releases/download/v0.3.0/t_Linux_arm64.tar.gz",
+#       "linux_arm64_sha256": "jkl012..."
+#     }
+#   }'
+
+jobs:
+  update-formula:
+    name: Update Homebrew formula
+    runs-on: ubuntu-24.04
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v6
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.3"
+    - name: Update formula
+      env:
+        FORMULA: ${{ github.event.client_payload.formula }}
+        VERSION: ${{ github.event.client_payload.version }}
+        DESCRIPTION: ${{ github.event.client_payload.description }}
+        HOMEPAGE: ${{ github.event.client_payload.homepage }}
+        DARWIN_AMD64_URL: ${{ github.event.client_payload.darwin_amd64_url }}
+        DARWIN_AMD64_SHA256: ${{ github.event.client_payload.darwin_amd64_sha256 }}
+        DARWIN_ARM64_URL: ${{ github.event.client_payload.darwin_arm64_url }}
+        DARWIN_ARM64_SHA256: ${{ github.event.client_payload.darwin_arm64_sha256 }}
+        LINUX_AMD64_URL: ${{ github.event.client_payload.linux_amd64_url }}
+        LINUX_AMD64_SHA256: ${{ github.event.client_payload.linux_amd64_sha256 }}
+        LINUX_ARM64_URL: ${{ github.event.client_payload.linux_arm64_url }}
+        LINUX_ARM64_SHA256: ${{ github.event.client_payload.linux_arm64_sha256 }}
+      run: rake update_formula
+    - name: Commit and push changes
+      env:
+        FORMULA: ${{ github.event.client_payload.formula }}
+        VERSION: ${{ github.event.client_payload.version }}
+      run: |
+        git config user.name "David Letterman[bot]"
+        git config user.email "david-letterman[bot]@users.noreply.github.com"
+
+        git checkout -b chore/bump-${FORMULA}-to-v${VERSION}
+        git add "Formula/${FORMULA}.rb"
+
+        if git diff --cached --quiet; then
+          echo "No changes to commit."
+          exit 0
+        fi
+
+        git commit -m "chore: Bump ${FORMULA} formula to v${VERSION}"
+        git push origin chore/bump-${FORMULA}-to-v${VERSION}

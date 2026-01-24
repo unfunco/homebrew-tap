@@ -1,4 +1,4 @@
-# Homebrew tap
+# 🍺 Homebrew tap
 
 [Homebrew] tap for personal CLI/TUI tools.
 
@@ -19,6 +19,17 @@ able to install any of the above tools with the following command:
 
 ```bash
 brew install <tool>
+```
+
+### XXX
+
+To trigger a rebuild of a formula, you can use the GitHub CLI to dispatch a
+workflow event as follows:
+
+```bash
+gh api repos/unfunco/homebrew-tap/dispatches \
+  -f event_type="" \
+  -f client_payload='{"formula":"t"}'
 ```
 
 ## License
